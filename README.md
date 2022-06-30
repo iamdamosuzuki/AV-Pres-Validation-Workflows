@@ -1,5 +1,9 @@
 this is the readme
 
+#Getting Started
+
+I needed to install git lfs to upload the large .mov files
+
 
 #Exercise 02: Compression Differences
 
