@@ -1,0 +1,10 @@
+.DS_Store
+._.DS_Store
+*.framemd5
+FFV1.mkv
+FFV1.mov
+H264_LowQ.mp4
+H264_HighQ.mp4
+ProRes.mov
+.*
+!/.gitignore
