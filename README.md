@@ -76,7 +76,35 @@ ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10
 ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[a1][a2];movie=FFV1.mkv,setpts=PTS-STARTPTS-TB,format=gbrp10le,split[b1][b2];[a1][b1]blend=all_mode=difference,format=yuv422p10le,split[blended1][blended2];[blended2]histeq=strength=0.1:intensity=0.2[blended2];[a2][b2]hstack[up];[blended2][blended1]hstack[bottom];[up][bottom]vstack"
 ```
 
-# Exercise 03: Round Trip Transcode
+# Exercise 03: Breaking an FFV1 Files
+
+Copy or move the FFV1.mkv file from the previous exercise into the folder named `03BreakFFV1`
+
+Change your terminal directory to `03BreakFFV1` using the `cd` command
+
+Run the following command to add heavy corruption to a file
+
+```
+ffmpeg -i FFV1.mkv -c copy -bsf:v noise=amount=-0.0000001 FFV1_HeavyCorruption.mkv
+```
+
+Run the following command to add medium corruption to a file
+
+```
+ffmpeg -i FFV1.mkv -c copy -bsf:v noise=amount='mod(n\,120)/110' FFV1_MediumCorruption.mkv
+```
+
+Run the following command to add light corruption to a file
+
+```
+ffmpeg -i FFV1.mkv -c copy -bsf:v noise=amount='eq(n\,150)' FFV1_LightCorruption.mkv
+```
+
+Watch each of these clips in VLC and see if you can identify the errors
+
+Play each of these files in FFplay and see what happens when FFmpeg encounters an error
+
+# Exercise 04: Round Trip Transcode
 
 
 # Exercise 04: Station Qualification
