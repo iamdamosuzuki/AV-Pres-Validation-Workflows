@@ -12,7 +12,7 @@ FFmpeg
 
 Mediainfo
 
-`brew install ffmpeg`
+`brew install mediainfo`
 
 QCTools
 
@@ -21,6 +21,10 @@ https://mediaarea.net/QCTools/Download
 Mediaconch
 
 https://mediaarea.net/MediaConch/Download
+
+VLC
+
+https://www.videolan.org/vlc/
 
 ### Recommended But Not Required
 
@@ -216,4 +220,4 @@ diff Source_Uncompressed.mov.encodedframemd5 MOV_From_FFV1.mov.encodedframemd5
 ```
 
 
-# Exercise 04: Station Qualification
+# Exercise 05: Station Qualification
