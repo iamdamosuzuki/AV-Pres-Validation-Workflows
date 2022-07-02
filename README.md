@@ -54,44 +54,69 @@ Now, run the following command to create derivatives from the uncompressed sourc
 ffmpeg -i Source_Uncompressed.mov  -c:v libx264 -pix_fmt yuv420p -movflags faststart -crf 30 -b:a 160000 -ar 48000 -vf setdar=4/3 'H264_LowQ.mp4' -c:v libx264 -pix_fmt yuv420p -movflags faststart -crf 18 -b:a 160000 -ar 48000 -vf setdar=4/3 'H264_HighQ.mp4' -c:v prores -profile:v 3 -c:a pcm_s24le -aspect 4:3 -ar 48000 -vf setdar=4/3 'ProRes.mov'  -c:v ffv1 -level 3 -g 1 -slices 16 -slicecrc 1 -color_primaries smpte170m -color_trc bt709 -colorspace smpte170m -color_range mpeg -metadata:s:v:0 'encoder= FFV1 version 3' -c:a copy -vf setfield=bff,setsar=40/27,setdar=4/3 -metadata creation_time=now -f matroska -vf setfield=bff,setdar=4/3 'FFV1.mkv'
 ```
 
-## For V210 vs V210
+## Comparing files visually against each other
 
-This string compares our source file to itself. It's a good test to make sure that what we're doing is working. If we subtract the file from itself we should get just black. If we see black in the lower left-hand corner then we know that the process is working properly.
+In this section we will visually compare files of different codecs against each other. Each command will make a 2x2 grid of videos. The top left is the source video, the top right is one of the derivatives, the bottom right is the source minus the derivative, and the bottom left is the source minus the derivative with the levels boosted. Boosting the levels is important in some cases because the visual differences in some cases are so subtle they cannot be seen easily.
+
+### Compare V210 against itself
+
+This command compares our source file to itself. It's a good test to make sure that what we're doing is working. If we subtract the file from itself we should get just black. If we see black in the lower row then we know that the process is working properly.
 
 ```
 ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[a1][a2];movie= Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[b1][b2];[a1][b1]blend=all_mode=difference,format=yuv422p10le,histeq=strength=0.1:intensity=0.2,pad=2*iw:ih:0:0[down];[a2][b2]hstack[up];[up][down]vstack"
 ```
 
-## For V210 vs ProRes
+### Compare V210 against ProRes
+
+This command compares our source file to the ProRes version. ProRes is a lossy compression encoding, but has excellent quality. The difference between the two is very subtle, but it's there.
+
 ```
 ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[a1][a2];movie=ProRes.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[b1][b2];[a1][b1]blend=all_mode=difference,format=yuv422p10le,split[blended1][blended2];[blended2]histeq=strength=0.1:intensity=0.2[blended2];[a2][b2]hstack[up];[blended2][blended1]hstack[bottom];[up][bottom]vstack"
 ```
 
-## For V210 vs High Quality H.264
+### Compare V210 against High Quality H.264
+
+This command compares our source file to the High Quality H.264. H.264 is more lossy than ProRes, and there should be a more pronounced difference between the uncompressed and H.264 file.
+
 ```
 ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[a1][a2];movie=H264_HighQ.mp4,setpts=PTS-STARTPTS,format=gbrp10le,split[b1][b2];[a1][b1]blend=all_mode=difference,format=yuv422p10le,split[blended1][blended2];[blended2]histeq=strength=0.1:intensity=0.2[blended2];[a2][b2]hstack[up];[blended2][blended1]hstack[bottom];[up][bottom]vstack"
 ```
 
-## For V210 vs Low Quality H.264
+### Compare V210 against Low Quality H.264
+
+This command compares our source file to the Low Quality H.264. There should be an even more pronounced difference between the uncompressed and H.264 file.
+
 ```
 ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[a1][a2];movie=H264_LowQ.mp4,setpts=PTS-STARTPTS,format=gbrp10le,split[b1][b2];[a1][b1]blend=all_mode=difference,format=yuv422p10le,split[blended1][blended2];[blended2]histeq=strength=0.1:intensity=0.2[blended2];[a2][b2]hstack[up];[blended2][blended1]hstack[bottom];[up][bottom]vstack"
 ```
 
-## For V210 vs FFV1
+### Compare V210 against FFV1
+
+This command compares our source file to the FFV1. There should be no difference here. Even the boosted levels difference should be completely black. This shows that there is no visual difference whatsoever between Uncompressed and FFV1.
+
 ```
 ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[a1][a2];movie=FFV1.mkv,setpts=PTS-STARTPTS-TB,format=gbrp10le,split[b1][b2];[a1][b1]blend=all_mode=difference,format=yuv422p10le,split[blended1][blended2];[blended2]histeq=strength=0.1:intensity=0.2[blended2];[a2][b2]hstack[up];[blended2][blended1]hstack[bottom];[up][bottom]vstack"
 ```
 
 # Exercise 03: Breaking an FFV1 Files
 
+As discussed in the lecture, FFV1 has internal checksum verification. This means that if a frame is corrupted somehow the file should be able to report that there is a problem during playback or decoding.
+
+## Creating corrupted files
+
 Copy or move the FFV1.mkv file from the previous exercise into the folder named `03BreakFFV1`
 
 Change your terminal directory to `03BreakFFV1` using the `cd` command
 
-Run the following command to add heavy corruption to a file
+```
+cd ..
+cd 03BreakFFV1
+```
+
+Run the following command to add heavily corrupted to a file
 
 ```
-ffmpeg -i FFV1.mkv -c copy -bsf:v noise=amount=-0.0000001 FFV1_HeavyCorruption.mkv
+ffmpeg -i FFV1.mkv -c copy -bsf:v noise=amount=-1 FFV1_HeavyCorruption.mkv
 ```
 
 Run the following command to add medium corruption to a file
@@ -106,9 +131,24 @@ Run the following command to add light corruption to a file
 ffmpeg -i FFV1.mkv -c copy -bsf:v noise=amount='eq(n\,150)' FFV1_LightCorruption.mkv
 ```
 
-Watch each of these clips in VLC and see if you can identify the errors
+## View corrupted files visually
 
-Play each of these files in FFplay and see what happens when FFmpeg encounters an error
+Watch each of these clips in VLC and see if you can identify the errors. The errors should be very obvious in the heavily corrupted file, but are far more subtle in the other files.
+
+## Decode corrupted files using FFplay
+
+If FFmpeg is used to decode these files it will report on any errors it encounters. The easiest way to do that is to simply play the files back in FFplay. Play each file and watch as FFplay reports on the errors. See if you can identify the errors as it reports them.
+
+```
+ffplay FFV1_HeavyCorruption.mkv
+
+```
+```
+ffplay FFV1_MediumCorruption.mkv
+```
+```
+ffplay FFV1_LightCorruption.mkv
+```
 
 # Exercise 04: Round Trip Transcode
 
