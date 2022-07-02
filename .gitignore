@@ -4,5 +4,6 @@
 *.mkv*
 *.mov*
 *.mp4*
+*.wav*
 .*
 !/.gitignore
