@@ -279,3 +279,49 @@ diff Source_Uncompressed.mov.encodedframemd5 MOV_From_FFV1.mov.encodedframemd5
 
 
 # Exercise 05: Station Qualification
+
+## Performing an Audio Null Test
+
+Create two sine wav files. Normally when performing a Null test you have a control file and a Test File. The Control File is made by a "known good" station and the Test File is made by the station you are testing. In this case however, we're just going to generate the files for simplicity's sake
+
+```
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 Control.wav
+```
+
+```
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 Test.wav
+```
+
+Ideally these files will be identical. If we added them together now you'd simply get a louder. In order to do a proper null test we'll need to phase reverse the Test File.
+
+```
+ffmpeg -i Test.wav -c:a pcm_s24le -ar 96000 -af "aeval='-val(0)':c=same" Test_Phase_Reversed.wav
+```
+
+Now we'll add the Control file and the Phase Reversed Test file together.
+
+```
+ffmpeg -i Control.wav -i Test_Phase_Reversed.wav -filter_complex amix=inputs=2:duration=longest File_Null_Test_Output.wav
+```
+
+The output should be completely silent! This proves that the two files we stated with, the Control File and Test File, were identical! This shouldn't be surprising, since the files were generated with the same original FFmpeg command. However, if you had created these two files for the sake of station qualification they should still be identical!
+
+Let's see what happens if the files aren't identical. First, make a noisy version of the Test File
+
+```
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -bsf:a noise=amount=-1 -c:a pcm_s24le -ar 96000 Test_w_Noise.wav
+```
+
+Now create a reversed phase version of the Noisy Test File
+
+```
+ffmpeg -i Test_w_Noise.wav -c:a pcm_s24le -ar 96000 -af "aeval='-val(0)':c=same" Test_w_Noise_Phase_Reversed.wav
+```
+
+Now we'll add the Control file and the Noisy Phase Reversed Test file together.
+
+```
+ffmpeg -i Control.wav -i Test_w_Noise_Phase_Reversed.wav -filter_complex amix=inputs=2:duration=longest Noisy_File_Null_Test_Output.wav
+```
+
+The output should be just noise! Only the non-similar information is retained after the null test. So, if you try to perform a null test and you hear noise or some sort of content, you know that your files are not identical and the station qualification has failed in some way. 
