@@ -141,20 +141,30 @@ If FFmpeg is used to decode these files it will report on any errors it encounte
 
 ```
 ffplay FFV1_HeavyCorruption.mkv
-
 ```
+
 ```
 ffplay FFV1_MediumCorruption.mkv
 ```
+
 ```
 ffplay FFV1_LightCorruption.mkv
 ```
 
 # Exercise 04: Round Trip Transcode
 
-Copy or move the `Source_Uncompressed.mov` file from the exercise 02 `04RoundTripTranscode`
+As we discussed in the lecture, FFV1's compression is fully lossless. This means that if you create an FFV1 file from an uncompressed file you should be able to decompress the FFV1 and get back the same exact uncompressed file. We'll now prove that mathematically!
+
+## Perform a Round-Trip Transcode
+
+Copy or move the `Source_Uncompressed.mov` file from the second exercise to the folder named `04RoundTripTranscode`
 
 Change your terminal directory to `04RoundTripTranscode` using the `cd` command
+
+```
+cd ..
+cd 04RoundTripTranscode
+```
 
 Create an FFV1 file from the `Source_Uncompressed.mov` file with the following command
 
@@ -168,13 +178,19 @@ Now, create an MOV file from the `FFV1_From_MOV.mkv` file with the following com
 ffmpeg -i FFV1_From_MOV.mkv -movflags write_colr -c:v v210 -color_primaries smpte170m -color_trc bt709 -colorspace smpte170m -color_range mpeg -metadata:s:v:0 "encoder=Uncompressed 10-bit 4:2:2" -c:a copy -vf setfield=bff,setsar=40/27,setdar=4/3 -f mov MOV_From_FFV1.mov
 ```
 
-We now have two MOV files, one that we started with (this was created with vrecord) and one that we created from the FFV1 file. Everything we know about FFV1 says that these files should be identical. How can we prove it. Visually we can do a difference blend like we did in exercise two using this command:
+## Perform a visual comparison
+
+We now have two MOV files, one that we started with (this was created with vrecord) and one that we created from the FFV1 file. Everything we know about FFV1 says that these files should be identical. How can we prove it? Visually we can do a difference blend like we did in exercise two using this command:
 
 ```
 ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[a1][a2];movie= MOV_From_FFV1.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[b1][b2];[a1][b1]blend=all_mode=difference,format=yuv422p10le,histeq=strength=0.1:intensity=0.2,pad=2*iw:ih:0:0[down];[a2][b2]hstack[up];[up][down]vstack"
 ```
 
-You should see nothing on the bottom row, meaning that they're perfectly visually identical. But we can also prove that all these files are mathematically identical by making checksums of the video tracks. Run the following commands to get that checksum info.
+You should see nothing on the bottom row, meaning that they're perfectly visually identical. We already did this, so it's sort of old news
+
+## Perform a mathematical comparison
+
+Now, let's perform a bit-level comparison of the uncompressed video stream. We can check to see if the video streams are identical by making checksums of the video streams in reach file. Run the following commands to get that checksum info. This command makes a single checksum of just the video steam data in each file
 
 ```
 ffmpeg -i Source_Uncompressed.mov  -map 0:v -f md5 Source_Uncompressed.mov.videomd5
@@ -188,9 +204,9 @@ ffmpeg -i FFV1_From_MOV.mkv  -map 0:v -f md5 FFV1_From_MOV.mkv.videomd5
 ffmpeg -i MOV_From_FFV1.mov  -map 0:v -f md5 MOV_From_FFV1.mov.videomd5
 ```
 
-If done correctly, these files should all match!
+You can now open each of these files in TextEdit or whatever you use to view text files. You should see that these files are perfectly match! Even a single bit difference between the video streams would result in a dramatically different checksum. The fact that these three files match means that the video information in all three files is exactly identical when decoded.
 
-This is different than if we just did a checksum of the entire. You can do that with the following three commands:
+This is different than if we just did a checksum of the entire file. You can do that with the following three commands:
 
 
 ```
@@ -205,7 +221,7 @@ md5 -q FFV1_From_MOV.mkv > FFV1_From_MOV.mkv.md5
 md5 -q MOV_From_FFV1.mov > MOV_From_FFV1.mov.md5
 ```
 
-You'll notice that these are all different. That's becausethe files themselves are not fully identical. Even the two MOV files are different. That's because the wrapper information and many non-essence parts of the file are difference. But, the video data in them is identical when decoded!
+You'll notice that these are all different. That's because the files themselves are not fully identical. Even the two MOV files are different. That's because the container information and many non-essence parts of the file are different. But, the video data in them is identical when decoded!
 
 If you want to go even deeper we can look at the frame level data. Make a framemd5 file for each video file using the following three commands
 
