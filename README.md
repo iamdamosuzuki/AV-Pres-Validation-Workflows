@@ -2,39 +2,41 @@
 
 ## Required Software
 
-homebrew
+### Command Line Installation
+
+The following programs can be installed via the command line
+
+#### Homebrew
 
 `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 
-FFmpeg
+#### FFmpeg
 
 `brew install ffmpeg`
 
-Mediainfo
+#### Mediainfo
 
 `brew install mediainfo`
 
-QCTools
-
-https://mediaarea.net/QCTools/Download
-
-Mediaconch
-
-https://mediaarea.net/MediaConch/Download
-
-VLC
-
-https://www.videolan.org/vlc/
-
-### Recommended But Not Required
-
-SoX
+#### SoX (suggested but not required)
 
 `brew install sox`
 
-I needed to install git lfs to upload the large .mov files
+### GUI Installations
 
-https://git-lfs.github.com/
+For the following programs you will need to follow the link to download a DMG.
+
+#### QCTools
+
+https://mediaarea.net/QCTools/Download
+
+#### Mediaconch
+
+https://mediaarea.net/MediaConch/Download
+
+#### VLC
+
+https://www.videolan.org/vlc/
 
 # Exercise 01: Mediainfo Mystery Meat
 
