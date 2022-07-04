@@ -294,12 +294,27 @@ Open up the spectrogram and see if you can follow along with with the music. You
 
 ### Sample Rate Issues
 
-The music sample was recorded at 48kHz. This means that audio up to 24kHz can be represneted. If you look on the left 
+The music sample was recorded at 48kHz. This means that audio up to 24kHz can be represented. If you look on the left side of the image you'll see that the frequency goes up to 24kHz.
 
+Now, let's create a 96kHz file from the 24kHz file:
+
+```
+ffmpeg -i Sample_Music.wav -c:a pcm_s24le -ar 96000 Sample_Music_96kHz.wav
+```
+
+If you listen to the file, there should be no audible difference between the two.
+
+Now, make a spectogram of the 96kHz file.
+
+```
+sox Sample_Music_96kHz.wav -n spectrogram -o Sample_Music_96kHz.wav.png
+```
+
+If you open this up, you'll see that the scale on the left goes up to 48kHz instead, but that the frequency spectrum is empty above 24kHz. SoX knows that the file is 96kHz, so the file can represent frequencies up to 48kHz. However, because the file was originally recorded at 48kHz there no audio above 24kHz in the file.
+
+This is an example of what would happen if your audio interface was not properly digitizing your analog signal. If you interface was converting the file as a 48kHz, but recording the file as 96kHz this is what you'd see. Or, for example, if your digitization vendor is recording files at 48kHz but then exporting or delivering 96kHz this is what you'll see.
 
 ### Dropped Samples
-
-
 
 Now, let's create a sample file that's just a sine wave:
 
