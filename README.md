@@ -38,15 +38,13 @@ https://mediaarea.net/MediaConch/Download
 
 https://www.videolan.org/vlc/
 
-# Exercise 01: Mediainfo Mystery Meat
-
-# Exercise 02: Compression Differences
+# Exercise 01: Compression Differences
 
 ## Create Derivative Files
 
 First, change directory to the folder named 02CompressionDifference
 
-`cd 02CompressionDifference`
+`cd 01CompressionDifference`
 
 Now, run the following command to create derivatives from the uncompressed source file
 
@@ -97,6 +95,8 @@ This command compares our source file to the FFV1. There should be no difference
 ```
 ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[a1][a2];movie=FFV1.mkv,setpts=PTS-STARTPTS-TB,format=gbrp10le,split[b1][b2];[a1][b1]blend=all_mode=difference,format=yuv422p10le,split[blended1][blended2];[blended2]histeq=strength=0.1:intensity=0.2[blended2];[a2][b2]hstack[up];[blended2][blended1]hstack[bottom];[up][bottom]vstack"
 ```
+
+# Exercise 02: Mediainfo Mystery Meat
 
 # Exercise 03: Breaking an FFV1 Files
 
@@ -401,4 +401,25 @@ Download this policy by pressing `Add to my policies`
 
 Go back to the Checker tab. Clear any existing files by pressing `x Close All Results`
 
-Drag the following files into the MediaConch window
+Drag the following files into the MediaConch window:
+
+- Sample_Music.wav
+- Sample_Music_96kHz.wav
+- Test.wav
+- Test_w_Noise.wav
+
+Now, click the dropdown next to `Apply a policy to all results` and select `PARADISEC Audio is 96kHz/24bit, stereo`
+
+MediaConch will now test all the files against that policy. You should see the following results:
+
+- Sample_Music.wav - FAIL
+- Sample_Music_96kHz.wav	- PASS
+- Test.wav	- PASS
+- Test_w_Noise.wav - PASS
+
+
+Sample_Music.wav fails because the file is not 96kHz, but is 48kHz. Remember however, that in the previous example we noted that Sample_Music_96kHz.wav was actually a problematic file. Even though the file itself was 96kHz, it was clear by looking at the spectrogram that the file had originally been recorded as 48kHz. This shows that while MediaConch can be useful for checking file specs, it can't always catch a bad file.
+
+The same issue can be been in how Test.wav passes, but so does Test_w_Noise.wav. Mediaconch doesn't know that there has been problematic noise added to the Test_w_Noise.wav file, it just knows that the file meets the desired file specifications.
+
+Keep this in mind when using MediaConch. It's possible for a file to fail MediaConch even though it's correct, and it's possible for a file to pass MediaConch even though it's wrong. MediaConch is just one of many useful tools available for station qualification.
