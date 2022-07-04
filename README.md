@@ -290,7 +290,16 @@ There is a sample music file included in this folder. Create a spectrogram of th
 sox Sample_Music.wav -n spectrogram -o Sample_Music.wav.png
 ```
 
-Open up the spectrogram and see if you can follow along with with the music. You should be able to see notes appear in the spectrogram.
+Open up the spectrogram and see if you can follow along with with the music. You should be able to see notes appear in the spectrogram. Spectrograms can be very useful for troubleshooting nad qualifying digitization stations.
+
+### Sample Rate Issues
+
+The music sample was recorded at 48kHz. This means that audio up to 24kHz can be represneted. If you look on the left 
+
+
+### Dropped Samples
+
+
 
 Now, let's create a sample file that's just a sine wave:
 
@@ -318,7 +327,7 @@ Listen to this file. You should hear a small click whenever a sample is dropped.
 sox SineWave_DroppedSamples.wav -n spectrogram -o SineWave_DroppedSamples.wav.png
 ```
 
-Now, view the spectogram. You'll see big lines of noise where the dropouts are. That's because dropouts manifest as momentary broadband noise. As you can, creating a spectogram of a file is an easy way to see whether samples have been dropped. Testing files created by your audio digitization workstation for dropouts is one way to qualify that workstation. 
+Now, view the spectogram. You'll see big lines of noise where the dropouts are. That's because dropouts manifest as momentary broadband noise. As you can, creating a spectogram of a file is an easy way to see whether samples have been dropped. Testing files created by your audio digitization workstation for dropouts is one way to qualify that workstation.
 
 
 ## Performing an Audio Null Test
