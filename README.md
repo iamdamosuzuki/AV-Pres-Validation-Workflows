@@ -350,11 +350,11 @@ Now, view the spectogram. You'll see big lines of noise where the dropouts are. 
 Create two sine wav files. Normally when performing a Null test you have a control file and a Test File. The Control File is made by a "known good" station and the Test File is made by the station you are testing. In this case however, we're just going to generate the files for simplicity's sake
 
 ```
-ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 Control.wav
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 -ac 2 Control.wav
 ```
 
 ```
-ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 Test.wav
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 -ac 2 Test.wav
 ```
 
 Ideally these files will be identical. If we added them together now you'd simply get a louder. In order to do a proper null test we'll need to phase reverse the Test File.
@@ -374,7 +374,7 @@ The output should be completely silent! This proves that the two files we stated
 Let's see what happens if the files aren't identical. First, make a noisy version of the Test File
 
 ```
-ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -bsf:a noise=amount=-1 -c:a pcm_s24le -ar 96000 Test_w_Noise.wav
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -bsf:a noise=amount=-1 -c:a pcm_s24le -ar 96000 -ac 2 Test_w_Noise.wav
 ```
 
 Now create a reversed phase version of the Noisy Test File
@@ -390,3 +390,15 @@ ffmpeg -i Control.wav -i Test_w_Noise_Phase_Reversed.wav -filter_complex amix=in
 ```
 
 The output should be just noise! Only the non-similar information is retained after the null test. So, if you try to perform a null test and you hear noise or some sort of content, you know that your files are not identical and the station qualification has failed in some way.
+
+## Using MediaConch to Check Format Conformance
+
+MediaConch stands for Media Conformance Checker. This tool is used to make sure that files properly conform to desired specifications. For this exercise we're going to check some of the files we've created against an agreed-upon specification profile.
+
+Open MediaConch, navigate to the Public Policies tab, and scroll down until you find profile named `PARADISEC Audio is 96kHz/24bit, stereo`
+
+Download this policy by pressing `Add to my policies`
+
+Go back to the Checker tab. Clear any existing files by pressing `x Close All Results`
+
+Drag the following files into the MediaConch window
