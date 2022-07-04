@@ -3,10 +3,11 @@ File Management:
   find a bunch of samples file, including SAMMA mxf
 
 Slides:
-  Slide 11: Sample Rate Discussion
-  Slide 20: Compression Discussion
-  Slide 32
-  Slide 33
+  Slide 33: How do FFV1 and MKV Work Together?
+  Slide 34: FFV1 / MKV for video preservation
+  Slide 38: Is the analog signal properly converted to digital?
+  Slide 39: Is the digital signal properly recorded?
+  Slide 40: Does the recorded format match the desired specs
 
 Exercises:
   Exercise 2:
