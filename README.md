@@ -280,6 +280,47 @@ diff Source_Uncompressed.mov.encodedframemd5 MOV_From_FFV1.mov.encodedframemd5
 
 # Exercise 05: Station Qualification
 
+## Investigating Spectograms
+
+A spectrogram is a visual representation of a file's frequency spectrum.
+
+There is a sample music file included in this folder. Create a spectrogram of the song with the following commnand.
+
+```
+sox Sample_Music.wav -n spectrogram -o Sample_Music.wav.png
+```
+
+Open up the spectrogram and see if you can follow along with with the music. You should be able to see notes appear in the spectrogram.
+
+Now, let's create a sample file that's just a sine wave:
+
+```
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 SineWave.wav
+```
+
+Now, make a spectrogram of this file:
+
+```
+sox SineWave.wav -n spectrogram -o SineWave.wav.png
+```
+
+Open up the spectogram. you should just see a line. That's because sine waves only have one frequency!
+
+Now, let's create a sine wave file with some dropped samples.
+
+```
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -bsf:a noise=drop='eq(mod(n\,50)\,1)' -c:a pcm_s24le -ar 96000 SineWave_DroppedSamples.wav
+```
+
+Listen to this file. You should hear a small click whenever a sample is dropped. One way to qualify a station would be to record audio and listen for this clicks. However, this takes a long time and would be very difficult to do. Let's make it easier by making a spectogram of this file:
+
+```
+sox SineWave_DroppedSamples.wav -n spectrogram -o SineWave_DroppedSamples.wav.png
+```
+
+Now, view the spectogram. You'll see big lines of noise where the dropouts are. That's because dropouts manifest as momentary broadband noise. As you can, creating a spectogram of a file is an easy way to see whether samples have been dropped. Testing files created by your audio digitization workstation for dropouts is one way to qualify that workstation. 
+
+
 ## Performing an Audio Null Test
 
 Create two sine wav files. Normally when performing a Null test you have a control file and a Test File. The Control File is made by a "known good" station and the Test File is made by the station you are testing. In this case however, we're just going to generate the files for simplicity's sake
@@ -324,4 +365,4 @@ Now we'll add the Control file and the Noisy Phase Reversed Test file together.
 ffmpeg -i Control.wav -i Test_w_Noise_Phase_Reversed.wav -filter_complex amix=inputs=2:duration=longest Noisy_File_Null_Test_Output.wav
 ```
 
-The output should be just noise! Only the non-similar information is retained after the null test. So, if you try to perform a null test and you hear noise or some sort of content, you know that your files are not identical and the station qualification has failed in some way. 
+The output should be just noise! Only the non-similar information is retained after the null test. So, if you try to perform a null test and you hear noise or some sort of content, you know that your files are not identical and the station qualification has failed in some way.
