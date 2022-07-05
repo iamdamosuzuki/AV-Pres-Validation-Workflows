@@ -1,6 +1,7 @@
-File Management:
+File/Exercise Management:
   Upload Source_Uncompressed.mov to internet archive
   find a bunch of samples file, including SAMMA mxf
+  Change sox to ffmpeg for spectrogram management
 
 Slides:
   Slide 33: How do FFV1 and MKV Work Together?
