@@ -333,7 +333,7 @@ ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 -ac
 Now, make a spectrogram of this file:
 
 ```
-ffmpeg SineWave.wav -vn -lavfi showspectrumpic=s=1280x480 SineWave.wav.png
+ffmpeg -i SineWave.wav -vn -lavfi showspectrumpic=s=1280x480 SineWave.wav.png
 ```
 
 Open up the spectogram. you should just see a line. That's because sine waves only have one frequency!
@@ -347,7 +347,7 @@ ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -bsf:a noise=drop='eq(mod(n\
 Listen to this file. You should hear a small click whenever a sample is dropped. One way to qualify a station would be to record audio and listen for this clicks. However, this takes a long time and would be very difficult to do. Let's make it easier by making a spectogram of this file:
 
 ```
-ffmpeg SineWave_DroppedSamples.wav -vn -lavfi showspectrumpic=s=1280x480 SineWave_DroppedSamples.wav.png
+ffmpeg -i SineWave_DroppedSamples.wav -vn -lavfi showspectrumpic=s=1280x480 SineWave_DroppedSamples.wav.png
 ```
 
 Now, view the spectogram. You'll see big lines of noise where the dropouts are. That's because dropouts manifest as momentary broadband noise. As you can, creating a spectogram of a file is an easy way to see whether samples have been dropped. Testing files created by your audio digitization workstation for dropouts is one way to qualify that workstation.
