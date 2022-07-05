@@ -1,14 +1,27 @@
 File/Exercise Management:
   Upload Source_Uncompressed.mov to internet archive
   find a bunch of samples file, including SAMMA mxf
-  Change sox to ffmpeg for spectrogram management
+  Need QCTools screenshots of
+    Quantized 8bit waveform
+    8bit slice
+    clipped waveform
+    vrep spikes
+    bad beta vrep spikes
+
 
 Slides:
-  Slide 33: How do FFV1 and MKV Work Together?
-  Slide 34: FFV1 / MKV for video preservation
-  Slide 38: Is the analog signal properly converted to digital?
-  Slide 39: Is the digital signal properly recorded?
-  Slide 40: Does the recorded format match the desired specs
+  Slide 34: How do FFV1 and MKV Work Together?
+  Slide 35: FFV1 / MKV for video preservation
+  Slide 39: Is the analog signal properly converted to digital?
+  Slide 40: Is the digital signal properly recorded?
+  Slide 41: Does the recorded format match the desired specs
+  Slide 50: Sync errors in QCTools
+  Slide 51: Repeated Frames in QCTools
+  Slide 52: 10bit/8bit in QCTools
+  Slide 53: Clipping in QCTools
+  Slide 54: Progressive Video in QCTools
+  Slide 59: Conformance with Mediaconch
+  Digitization station qualification - tie back bullets to previous concepts
 
 Exercises:
   Exercise 2:
