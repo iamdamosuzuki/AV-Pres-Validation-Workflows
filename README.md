@@ -284,6 +284,14 @@ diff Source_Uncompressed.mov.encodedframemd5 MOV_From_FFV1.mov.encodedframemd5
 
 A spectrogram is a visual representation of a file's frequency spectrum.
 
+First, Change your terminal directory to `05AudioStationQualification` using the `cd` command
+
+```
+cd ..
+cd 05AudioStationQualification
+```
+
+
 There is a sample music file included in this folder. Create a spectrogram of the song with the following commnand.
 
 ```
@@ -319,7 +327,7 @@ This is an example of what would happen if your audio interface was not properly
 Now, let's create a sample file that's just a sine wave:
 
 ```
-ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 SineWave.wav
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 -ac 2 SineWave.wav
 ```
 
 Now, make a spectrogram of this file:
