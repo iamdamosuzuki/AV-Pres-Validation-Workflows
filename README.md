@@ -151,6 +151,34 @@ ffplay FFV1_MediumCorruption.mkv
 ffplay FFV1_LightCorruption.mkv
 ```
 
+## Log any potential errors
+
+You may have seen some errors appear in the terminal window while FFplay plays back the files. This is a good way to identify any errors, but it's pretty easy to miss. The best way to dig down and see if a file has any errors is to ask FFmpeg to validate the file and put any issues it finds into a log. Here's the general command to do that:
+
+```
+ffmpeg -v error -i [input file] -f null - 2> [log file]
+```
+
+You can run this command on the four files that we have and see what the output looks like. These commands save the log as a sidecare file of the original video file, which is my favorite way to organize these kinds of files.
+
+```
+ffmpeg -v error -i FFV1.mkv -f null - 2> FFV1.mkv.error.log
+```
+
+```
+ffmpeg -v error -i FFV1_HeavyCorruption.mkv -f null - 2> FFV1_HeavyCorruption.mkv.error.log
+```
+
+```
+ffmpeg -v error -i FFV1_MediumCorruption.mkv -f null - 2> FFV1_MediumCorruption.mkv.error.log
+```
+
+```
+ffmpeg -v error -i FFV1_LightCorruption.mkv -f null - 2> FFV1_LightCorruption.mkv.error.log
+```
+
+If the log is empty it means there are no errors. Otherwise, the log will list all of the errors that FFmpeg found while decoding the file. 
+
 # Exercise 04: Round Trip Transcode
 
 As we discussed in the lecture, FFV1's compression is fully lossless. This means that if you create an FFV1 file from an uncompressed file you should be able to decompress the FFV1 and get back the same exact uncompressed file. We'll now prove that mathematically!
