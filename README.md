@@ -287,7 +287,7 @@ A spectrogram is a visual representation of a file's frequency spectrum.
 There is a sample music file included in this folder. Create a spectrogram of the song with the following commnand.
 
 ```
-sox Sample_Music.wav -n spectrogram -o Sample_Music.wav.png
+ffmpeg -i Sample_Music.wav -vn -lavfi showspectrumpic=s=1280x480 Sample_Music.wav.png
 ```
 
 Open up the spectrogram and see if you can follow along with with the music. You should be able to see notes appear in the spectrogram. Spectrograms can be very useful for troubleshooting nad qualifying digitization stations.
@@ -307,10 +307,10 @@ If you listen to the file, there should be no audible difference between the two
 Now, make a spectogram of the 96kHz file.
 
 ```
-sox Sample_Music_96kHz.wav -n spectrogram -o Sample_Music_96kHz.wav.png
+ffmpeg -i Sample_Music_96kHz.wav -vn -lavfi showspectrumpic=s=1280x480 Sample_Music_96kHz.wav.png
 ```
 
-If you open this up, you'll see that the scale on the left goes up to 48kHz instead, but that the frequency spectrum is empty above 24kHz. SoX knows that the file is 96kHz, so the file can represent frequencies up to 48kHz. However, because the file was originally recorded at 48kHz there no audio above 24kHz in the file.
+If you open this up, you'll see that the scale on the left goes up to 48kHz instead, but that the frequency spectrum is empty above 24kHz. FFmpeg knows that the file is 96kHz, so the file can represent frequencies up to 48kHz. However, because the file was originally recorded at 48kHz there no audio above 24kHz in the file.
 
 This is an example of what would happen if your audio interface was not properly digitizing your analog signal. If you interface was converting the file as a 48kHz, but recording the file as 96kHz this is what you'd see. Or, for example, if your digitization vendor is recording files at 48kHz but then exporting or delivering 96kHz this is what you'll see.
 
@@ -325,7 +325,7 @@ ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -c:a pcm_s24le -ar 96000 Sin
 Now, make a spectrogram of this file:
 
 ```
-sox SineWave.wav -n spectrogram -o SineWave.wav.png
+ffmpeg SineWave.wav -vn -lavfi showspectrumpic=s=1280x480 SineWave.wav.png
 ```
 
 Open up the spectogram. you should just see a line. That's because sine waves only have one frequency!
@@ -339,7 +339,7 @@ ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -bsf:a noise=drop='eq(mod(n\
 Listen to this file. You should hear a small click whenever a sample is dropped. One way to qualify a station would be to record audio and listen for this clicks. However, this takes a long time and would be very difficult to do. Let's make it easier by making a spectogram of this file:
 
 ```
-sox SineWave_DroppedSamples.wav -n spectrogram -o SineWave_DroppedSamples.wav.png
+ffmpeg SineWave_DroppedSamples.wav -vn -lavfi showspectrumpic=s=1280x480 SineWave_DroppedSamples.wav.png
 ```
 
 Now, view the spectogram. You'll see big lines of noise where the dropouts are. That's because dropouts manifest as momentary broadband noise. As you can, creating a spectogram of a file is an easy way to see whether samples have been dropped. Testing files created by your audio digitization workstation for dropouts is one way to qualify that workstation.
