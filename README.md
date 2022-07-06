@@ -177,7 +177,7 @@ ffmpeg -v error -i FFV1_MediumCorruption.mkv -f null - 2> FFV1_MediumCorruption.
 ffmpeg -v error -i FFV1_LightCorruption.mkv -f null - 2> FFV1_LightCorruption.mkv.error.log
 ```
 
-If the log is empty it means there are no errors. Otherwise, the log will list all of the errors that FFmpeg found while decoding the file. 
+If the log is empty it means there are no errors. Otherwise, the log will list all of the errors that FFmpeg found while decoding the file.
 
 # Exercise 04: Round Trip Transcode
 
@@ -306,7 +306,7 @@ diff Source_Uncompressed.mov.encodedframemd5 MOV_From_FFV1.mov.encodedframemd5
 ```
 
 
-# Exercise 05: Station Qualification
+# Exercise 05: Audio Station Qualification
 
 ## Investigating Spectograms
 
@@ -459,3 +459,66 @@ Sample_Music.wav fails because the file is not 96kHz, but is 48kHz. Remember how
 The same issue can be been in how Test.wav passes, but so does Test_w_Noise.wav. Mediaconch doesn't know that there has been problematic noise added to the Test_w_Noise.wav file, it just knows that the file meets the desired file specifications.
 
 Keep this in mind when using MediaConch. It's possible for a file to fail MediaConch even though it's correct, and it's possible for a file to pass MediaConch even though it's wrong. MediaConch is just one of many useful tools available for station qualification.
+
+# Exercise 06: Video Station Qualification
+
+Now that you've learned some ways to analyze and probe files, it's time to use those methods to qualify some file. On the internet archive there are 9 .mkv files. Download these files from here:
+
+alkjdlksajdlksafjaf
+
+Once you have the files downloaded, move them to the `06VideoStationQualification` folder and move your terminal window into that folder using the `cd` commands
+
+```
+cd ..
+cd 06VideoStationQualification
+```
+
+Now, use what you've learned in this workshop to see which of these files comes from a properly qualified digitization workstation. Only one of these files is error free! See if you can find the correct one. You may be able to do so on your own, but in case you get lost there's a series of hints below. Expand the text to see the hints.
+
+
+<details>
+  <summary>Hint 1</summary>
+
+  Run the files against the NYPL_FFV1 MediaConch policy to if the files properly conform to the agreed upon specifications for FFV1/MKV Preservation Files
+
+</details>
+
+<details>
+  <summary>Hint 2</summary>
+
+  The following command will create an FFmpeg error log for every file in the directory. You can use this log to see if there are any errors in the files that FFmpeg can see
+
+  ```
+  for file in *.mkv ; do ffmpeg -v error -i "$file" -f null - 2>  "${file}.error.log" ; done
+  ```
+
+</details>
+
+<details>
+  <summary>Hint 3</summary>
+
+  The following command will create a spectogram for every file. You can use this to see if there are any errors in the frequency specturum
+
+  ```
+  for file in *.mkv ; do ffmpeg -i "$file" -vn -lavfi showspectrumpic=s=1280x480 "${file}.png" ; done
+  ```
+
+</details>
+
+<details>
+  <summary>Hint 4</summary>
+
+  The following command will create a QCTools Report for every file. You can use this to quickly load the QCTools information. From there you can further investigate the files for potential errors.
+
+  ```
+  for file in *.mkv ; do qcli -i "$file" ; done
+  ```
+
+</details>
+
+<details>
+  <summary>Hint 5</summary>
+
+  Don't forget to visually inspect the files! Use your eyes and ears. Also, FFplay is a better playback platform for troubleshooting than VLC because sometimes VLC will fix problems it sees, whereas FFplay will play exactly what it encounters, even if it's problematic.
+
+</details>
