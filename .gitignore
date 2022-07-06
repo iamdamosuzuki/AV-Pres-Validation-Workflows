@@ -8,3 +8,4 @@
 !/Sample_Music.wav
 .*
 !*/.gitignore
+!*/Mystery*
