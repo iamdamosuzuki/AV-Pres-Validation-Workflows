@@ -37,10 +37,17 @@ Exercises:
       compression mode
 
   Exercise 6:
-    Need to make the following files (probably best to make these all FFV1)
-      File with dropped frames (can be b&t)
-      File with clipping frames (can be b&t)
-      File with repeated frames (ideally not b&t)
-      10 bit file with only 8bits of luma information
-      File with AV sync problems
-      FFV1 file with bad CRC checksums
+    Need to write out instructions for:
+      How to make ffmpeg error reports for everything in a folder
+      how to make spectrograms for everything in a folder
+      how to make qctools reports for everything in a folder
+      a list to checkoff the following items
+        does it pass mediaconch?
+        does it have ane vrep in qctools?
+        does the waveform look correct in qctools?
+        is the waveform clipping?
+        is the file 10 bits?
+        does the spectogram look correct?
+        is the content interlaced?
+        is the av sync working?
+      hide the hints in spoiler blocks
