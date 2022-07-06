@@ -1,5 +1,4 @@
 File/Exercise Management:
-  Upload Source_Uncompressed.mov to internet archive
   find a bunch of samples file, including SAMMA mxf
   Need QCTools screenshots of
     Quantized 8bit waveform
@@ -10,7 +9,6 @@ File/Exercise Management:
 
 
 Slides:
-  Slide 34: How do FFV1 and MKV Work Together?
   Slide 35: FFV1 / MKV for video preservation
   Slide 39: Is the analog signal properly converted to digital?
   Slide 40: Is the digital signal properly recorded?
@@ -35,19 +33,3 @@ Exercises:
       bit depth
       codec
       compression mode
-
-  Exercise 6:
-    Need to write out instructions for:
-      How to make ffmpeg error reports for everything in a folder
-      how to make spectrograms for everything in a folder
-      how to make qctools reports for everything in a folder
-      a list to checkoff the following items
-        does it pass mediaconch?
-        does it have ane vrep in qctools?
-        does the waveform look correct in qctools?
-        is the waveform clipping?
-        is the file 10 bits?
-        does the spectogram look correct?
-        is the content interlaced?
-        is the av sync working?
-      hide the hints in spoiler blocks
