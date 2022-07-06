@@ -38,7 +38,48 @@ https://mediaarea.net/MediaConch/Download
 
 https://www.videolan.org/vlc/
 
+## Downloading Required Files
+
+The files that you need in order complete the exercises are quite large. You should stat downloading the files immediately so that they'll be ready by the time you need them.
+
+### File for Exercise 1
+
+You'll need to download the Uncompressed MOV File named `Source_Uncompressed.mov` from this page:
+
+https://archive.org/details/source-uncompressed
+
+Here's a direct link to download that file:
+
+https://archive.org/download/source-uncompressed/Source_Uncompressed.mov (right click and hit "save as")
+
+Once you have the files downloaded, move them to the `01CompressionDifference` folder in the repo.
+
+### Files for Exercise 2
+
+You'll also need to download the Matroska Files from this page:
+
+https://archive.org/details/qualification-test-file-02
+
+Here's a direct link to download those files:
+
+https://archive.org/compress/qualification-test-file-02/formats=MATROSKA&file=/qualification-test-file-02.zip
+
+Once you have the files downloaded, move them to the `06VideoStationQualification` folder in the repo.
+
+
 # Exercise 01: Compression Differences
+
+## Download files.
+
+If you haven't already downloaded the file for this exercise, do so now. You'll need to download the Uncompressed MOV File named `Source_Uncompressed.mov` from this page:
+
+https://archive.org/details/source-uncompressed
+
+Here's a direct link to download that file:
+
+https://archive.org/download/source-uncompressed/Source_Uncompressed.mov (right click and hit "save as")
+
+Once you have the files downloaded, move them to the `01CompressionDifference` folder in the repo.
 
 ## Create Derivative Files
 
@@ -97,6 +138,8 @@ ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10
 ```
 
 # Exercise 02: Mediainfo Mystery Meat
+
+COMING SOON!
 
 # Exercise 03: Breaking an FFV1 Files
 
@@ -462,9 +505,13 @@ Keep this in mind when using MediaConch. It's possible for a file to fail MediaC
 
 # Exercise 06: Video Station Qualification
 
-Now that you've learned some ways to analyze and probe files, it's time to use those methods to qualify some file. On the internet archive there are 9 .mkv files. Download these files from here:
+Now that you've learned some ways to analyze and probe files, it's time to use those methods to qualify some file. On the internet archive there are 9 .mkv files. Download the Matroska files from this page:
 
-alkjdlksajdlksafjaf
+https://archive.org/details/qualification-test-file-02
+
+Here's a direct link to download those files:
+
+https://archive.org/compress/qualification-test-file-02/formats=MATROSKA&file=/qualification-test-file-02.zip
 
 Once you have the files downloaded, move them to the `06VideoStationQualification` folder and move your terminal window into that folder using the `cd` commands
 
