@@ -305,11 +305,11 @@ ffplay -loop -1 MysteryFile03.wav
 
 You'll see the waveforms appear immediately. The audio is a voice saying the channel that audio is coming out of. You can easily see in waveform how the channel configuration relates to the organization of the streams. This file has 6 channels, it's a 5.1 surround. 5.1 refers to the follow streams:
 
-  - 1) Front Left
-  - 2) Front Right
-  - 3) Center
-  - 4) Back Left
-  - 5) Back Right
+  - 1  ) Front Left
+  - 2  ) Front Right
+  - 3  ) Center
+  - 4  ) Back Left
+  - 5  ) Back Right
   - 5.1) Subwoofer
 
 ## MysteryFile04
