@@ -176,6 +176,8 @@ The general section holds information about the container. in this case, the con
 
 There is one video section and one audio section. The video section `Codec ID` is `v210`, which is the 10-bit Uncompressed Codec. The `Format` for the audio section is `PCM` which is uncompressed audio. You can even look down at the `Sampling rate` and `Bit Depth` fields and see that they are `48.0 kHz` and `24bit` respectively. This is a nice 10-bit Uncompressed MOV file with 48kHz/24bit audio. A great choice for video preservation.
 
+One of the most helpful fields that mediainfo can give you is the `Compression Mode` field. This will either say `Lossless` or `Lossy`. If the mode is `Lossy` then you know the file is not sufficient for preservation!
+
 Another way to probe the file for information is to run this command
 
 ```
