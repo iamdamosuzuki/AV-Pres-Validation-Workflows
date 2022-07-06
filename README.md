@@ -319,7 +319,7 @@ The next file looks like another .mov file, try double-clicking it to open it in
 Wait, that didn't work! What's going on here. Probe the file to see what's happening
 
 ```
-ffprobe -hide_banner MysteryFile04.
+ffprobe -hide_banner MysteryFile04.mov
 ```
 
 Here's what you should see
@@ -332,13 +332,85 @@ Input #0, matroska,webm, from 'MysteryFile04.mov':
   Stream #0:0(eng): Video: h264 (High), yuv420p(progressive), 1280x720, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 20k tbn (default)
 ```
 
+The file is actually a Matroska file! It turns out files can lie. Even if the extension is .mov, the file itself can be an .mkv, or really anything. Be careful out there! Sometimes files won't even have extensions, but you can use ffprobe or mediainfo to see what's really going on in there.
+
+Try playing the file in FFplay
+
+```
+ffplay -loop -1 MysteryFile04.mov
+```
+
+You'll see that it plays fine! You can also drag the file into VLC and it'll play fine. If you rename the file to `MysteryFile04.mkv` and double click it it'll open just fine in VLC. Extensions just tell the computer which software to open the file with, and don't affect the file's utility otherwise.
 
 ## MysteryFile05
 
+This is a fun one. Try and open this file in VLC.
 
+What do you think? The audio sounds fine, but the video looks crazy. What's going on here? Let's open the file in ffprobe.
+
+```
+ffprobe -hide_banner MysteryFile04.
+```
+
+Here's what you should see
+
+```
+[mxf @ 0x7ffb2f42df80] broken or empty index
+[mxf @ 0x7ffb2f42df80] error getting stream index 67174400
+[jpeg2000 @ 0x7ffb2f4301c0] Missing EOC Marker.
+[mxf @ 0x7ffb2f42df80] Estimating duration from bitrate, this may be inaccurate
+Input #0, mxf, from 'MysteryFile05.mxf':
+  Metadata:
+    operational_pattern_ul: 060e2b34.04010101.0d010201.01010900
+    uid             : 81ddd167-c3b8-11de-a525-001b2128a1f2
+    generation_uid  : 81ddd168-c3b8-11de-a2e4-001b2128a1f2
+    company_name    : SAMMA Systems
+    product_name    : MXF for SAMMA mjpeg2k
+    product_version_num: 0.2.0.41.0
+    product_version : 0.2.0.41
+    application_platform: win32
+    product_uid     : 43339ae6-9040-4e2c-be5f-a3de38328894
+    toolkit_version_num: 0.2.0.41.0
+    modification_date: 2009-10-28T11:53:28.788000Z
+    material_package_umid: 0x060A2B340101010501010D121322F4CC034B8D0232510585CFD3001B2128A1F2
+    timecode        : 01:03:34:21
+  Duration: 00:00:26.65, start: 0.000000, bitrate: 3073 kb/s
+  Stream #0:0: Video: jpeg2000, yuv422p(unknown/unknown/bt470m, top first), 720x243, lossless, SAR 9:20 DAR 4:3, 59.94 tbr, 59.94 tbn
+    Metadata:
+      file_package_umid: 0x060A2B340101010501010D121349F1F1034B8D0232510585BBE9001B2128A1F2
+      file_package_name: Source Package
+      track_name      : Track 1
+  Stream #0:1: Audio: pcm_s16le, 48000 Hz, 4 channels, s16, 3072 kb/s
+    Metadata:
+      file_package_umid: 0x060A2B340101010501010D121349F1F1034B8D0232510585BBE9001B2128A1F2
+      file_package_name: Source Package
+      track_name      : Track 2
+```
+
+First, there's a few errors. That's not good but maybe not the end of the world. From the container metadata we can see that this is a SAMMA JPEG2000 MXF file! These file are notorious for being problematic. but let's see if we can make out more information about it. It has two streams, one video stream and one audio stream.
+
+The video stream `0:0` is jpeg2000, yuv422, 4:3. This stuff is normal. The weird part is that the framerate is 59.94, which is double the standard 29.97 framerate, and the size is 720x243, which is half the height of the standard 720x486. What's happening here? These files hold the data for each field in their own frame. So what FFmpeg sees as a frame is actually half a frame. The two fields are combined to make a single frame for playback!
+
+the audio stream `0:1` is 4 channels, 16 bit, 48kHz PCM. Looks pretty standard, but it's 16 bits instead of 24 bits.
+
+Let's see what ffplay can do with this file
+
+```
+ffplay -loop -1 MysteryFile05.mxf
+```
+
+The file actually plays mostly ok in FFplay, which unlike VLC can properly make out the information. FFplay does report a bunch of errors, and the frame size isn't correct, but this is still better than VLC!
 
 ## MysteryFile06
 
+Take a look at this file yourself! Probe it, play it, investigate, and see if you can make any interesting conclusions about this file. When you're done, expand the text below to see what I think about this files
+
+<details>
+  <summary>Don't open until you've investigated the file!</summary>
+
+  This file is actually a properly formed FFV1/MKV file. It would work great as a preservation file!
+
+</details>
 
 
 # Exercise 03: Breaking an FFV1 Files
