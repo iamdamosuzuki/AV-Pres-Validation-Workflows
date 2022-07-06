@@ -137,9 +137,209 @@ This command compares our source file to the FFV1. There should be no difference
 ffplay -f lavfi "movie=Source_Uncompressed.mov,setpts=PTS-STARTPTS,format=gbrp10le,split[a1][a2];movie=FFV1.mkv,setpts=PTS-STARTPTS-TB,format=gbrp10le,split[b1][b2];[a1][b1]blend=all_mode=difference,format=yuv422p10le,split[blended1][blended2];[blended2]histeq=strength=0.1:intensity=0.2[blended2];[a2][b2]hstack[up];[blended2][blended1]hstack[bottom];[up][bottom]vstack"
 ```
 
-# Exercise 02: Mediainfo Mystery Meat
+# Exercise 02: Media Mystery Meat
 
-COMING SOON!
+For this exercise you're going to probe a bunch of mystery files and figure out what they are, and which might be a good candidate for a Preservation file. The files you'll need should have been downloaded with repository. They are in the `02MediaMysteryMeat` folder. Move your terminal window into that folder using the `cd` commands
+
+```
+cd ..
+cd 02MediaMysteryMeat
+```
+
+There are five mystery files. Let's start with the first one
+
+_Note: these files all came from the FFmpeg sample file repository, I have no idea what the content is, please don't judge me._
+
+## MysteryFile01
+
+If you double click this file it should open in Quicktime, however this isn't super helpful for this exercise. We want to know what's going in onside the file. To do so we can run `mediainfo` on the file with the following commands
+
+```
+mediainfo MysteryFile01.mov
+```
+
+Mediainfo will then display what it can figure out about the file. This information is written into the file's header information. In the file's header there is a field for all of these metadata. Sometimes there's more than one field for some of the data, and sometimes there's not a field. In these cases mediainfo will do what it can figure out what the proper information is. The standard mediainfo output is not every single field, but rather the fields that mediainfo thinks are important with some of the redundant fields removed. To see everything, you can run this command
+
+```
+mediainfo -f MysteryFile01.mov
+```
+
+You'll see that there's a lot more info now! But some of it repeated info, or reformatted info so it's not super useful all the time.
+
+Back to the original output, we can figure out a few things about this file by looing at the mediainfo output. First of all, you'll see three major sections:
+
+- General
+- Video
+- Audio
+
+The general section holds information about the container. in this case, the container format is `QuickTime` which refers to the MOV container.
+
+There is one video section and one audio section. The video section `Codec ID` is `v210`, which is the 10-bit Uncompressed Codec. The `Format` for the audio section is `PCM` which is uncompressed audio. You can even look down at the `Sampling rate` and `Bit Depth` fields and see that they are `48.0 kHz` and `24bit` respectively. This is a nice 10-bit Uncompressed MOV file with 48kHz/24bit audio. A great choice for video preservation.
+
+Another way to probe the file for information is to run this command
+
+```
+ffprobe -hide_banner MysteryFile01.mov
+```
+
+This runs `ffprobe` on the file, which is FFmpeg's tool for gathering information from multimedia streams. At the top you'll see a `Metadata` section that looks like this:
+
+```
+Metadata:
+    major_brand     : qt  
+    minor_version   : 512
+    compatible_brands: qt  
+    encoder         : Lavf59.16.100
+```
+This indicates that the file is a QuickTime, or MOV file. Then you'll see the stream information below:
+
+```
+Stream #0:0[0x1](eng): Video: v210 (v210 / 0x30313276), yuv422p10le(smpte170m/smpte170m/bt709, bottom coded first (swapped)), 720x486, 223725 kb/s, SAR 9:10 DAR 4:3, 29.97 fps, 29.97 tbr, 30k tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      vendor_id       : FFMP
+      encoder         : Lavc59.18.100 v210
+  Stream #0:1[0x2](eng): Audio: pcm_s24le (in24 / 0x34326E69), 48000 Hz, stereo, s32 (24 bit), 2304 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+      vendor_id       : [0][0][0][0]
+```
+
+The stream notation is `x:y`, where `x` refers to the file number (in case you give it multiple files) and `y` refers to the stream number. Computers start counting at zero, so the first stream of the first file is always `0:0`
+
+In this case, `stream #0:0` is the video stream in the file. It's v210 video, as expected. There's also a bunch of useful data like it's frame size, frame rate, and more.
+
+ `stream #0:1` is the audio stream. it's in24, 48kHz, 24bit as expected!
+
+ On last thing we can do with this file is play it back in `ffplay`. You can do that with this command.
+
+ ```
+ffplay -loop -1 MysteryFile01.mov
+ ```
+
+BTW, you can run this with out `-loop -1` flag, but this will keep looping the file and these files are pretty short so it can help with the exercises.
+
+When you play the file in FFplay it'll open up in a new window. If you press `w` once it will show you the audio waveforms. If you do this you'll see that there are two audio channels. If you press `w` a second time it'll show you a specotrgram. This shows the the frequency information in the audio portion of the file. We'll talk about this more later! If you press `w` a third time the video will show again. Press `esc` to quit.
+
+You now have some fun tools to play with! We'll use them on the rest of the files to figure out what they are.
+
+## MysteryFile02
+
+If you have VLC installed this file will open in VLC is you double click it. This is a good indication that the file is at least somewhat properly formed. However, VLC will play most things that you can throw at it.
+
+Run ffprobe on the file and let's see what's inside:
+
+```
+Input #0, matroska,webm, from '/Users/morgan/Documents/GitHub/AV-Pres-Validation-Workflows/02MediaMysteryMeat/MysteryFile02.mkv':
+  Metadata:
+    title           : Mai Hime 01: That's a serious matter for a maiden
+    encoder         : libebml v0.7.7 + libmatroska v0.8.0
+    creation_time   : 2006-09-16T16:57:05.000000Z
+  Duration: 00:00:23.18, start: 0.000000, bitrate: 1874 kb/s
+  Chapters:
+    Chapter #0:0: start 0.000000, end 23.180000
+      Metadata:
+        title           : Prologue
+  Stream #0:0: Video: h264 (High), yuv420p(progressive), 704x480, SAR 10:11 DAR 4:3, 23.98 fps, 23.98 tbr, 1k tbn (default)
+    Metadata:
+      title           : Mai Hime 01: That's a serious matter for a maiden
+  Stream #0:1(jpn): Audio: vorbis, 48000 Hz, stereo, fltp (default)
+    Metadata:
+      title           : 2.0 Vorbis
+  Stream #0:2(eng): Audio: vorbis, 48000 Hz, stereo, fltp
+    Metadata:
+      title           : 2.0 Vorbis
+  Stream #0:3(ger): Audio: vorbis, 48000 Hz, stereo, fltp
+    Metadata:
+      title           : 2.0 Vorbis
+  Stream #0:4(fre): Audio: vorbis, 48000 Hz, stereo, fltp
+    Metadata:
+      title           : 2.0 Vorbis
+  Stream #0:5(eng): Subtitle: ass (default)
+    Metadata:
+      title           : ASS
+  Stream #0:6(eng): Subtitle: subrip
+    Metadata:
+      title           : SRT
+  Stream #0:7(ger): Subtitle: ass
+    Metadata:
+      title           : ASS
+  Stream #0:8: Attachment: ttf
+    Metadata:
+      filename        : MAIAN.TTF
+      mimetype        : application/x-truetype-font
+  Stream #0:9: Attachment: ttf
+    Metadata:
+      filename        : SanvitoPro-LtCapt.otf
+      mimetype        : application/x-truetype-font
+  Stream #0:10: Attachment: ttf
+    Metadata:
+      filename        : HighlanderStd-Book.otf
+      mimetype        : application/x-truetype-font
+Unsupported codec with id 98304 for input stream 8
+Unsupported codec with id 98304 for input stream 9
+Unsupported codec with id 98304 for input stream 10
+```
+
+If you check the top section you'll see this a `matroska` file. This file has WAY more than two streams. Stream `0:0` is an x.264 video stream. Streams `0:1` thru `0:4` are audio streams in different languages. Streams `0:5` thru `0:7` are subtitle streams in different languages. Streams `0:8` thru `0:10` are fonts for the subtitle streams.
+
+That's a complicated file!
+
+Now play it with ffplay
+
+```
+ffplay -loop -1 MysteryFile02.mkv
+```
+
+If you press `w` you'll onyl see two audio channels. That's because it's only showing one stream at a time. An easy way to access the extra streams is to play the file in VLC again. In VLC, select `Audio -> Audio Track` to see the additional audio streams. You can access the subtitles by selecting `Subtitle -> Subtitle Track`.
+
+By probing this file we've seen just how complex MKV files can be. This is useful for Preservation in that we can properly store all the information from a videotape in a way that properly reflects its organization on the tape.
+
+## MysteryFile03
+
+This looks like it's probably an audio file, because it has a `.wav` extension. Let's open it in ffplay.
+
+```
+ffplay -loop -1 MysteryFile03.wav
+```
+
+You'll see the waveforms appear immediately. The audio is a voice saying the channel that audio is coming out of. You can easily see in waveform how the channel configuration relates to the organization of the streams. This file has 6 channels, it's a 5.1 surround. 5.1 refers to the follow streams:
+
+  - 1) Front Left
+  - 2) Front Right
+  - 3) Center
+  - 4) Back Left
+  - 5) Back Right
+  - 5.1) Subwoofer
+
+## MysteryFile04
+
+The next file looks like another .mov file, try double-clicking it to open it in QuckTime.
+
+Wait, that didn't work! What's going on here. Probe the file to see what's happening
+
+```
+ffprobe -hide_banner MysteryFile04.
+```
+
+Here's what you should see
+
+```
+Input #0, matroska,webm, from 'MysteryFile04.mov':
+  Metadata:
+    encoder         : Haali Matroska Writer b0
+  Duration: 00:00:40.24, start: 0.000000, bitrate: 4099 kb/s
+  Stream #0:0(eng): Video: h264 (High), yuv420p(progressive), 1280x720, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 20k tbn (default)
+```
+
+
+## MysteryFile05
+
+
+
+## MysteryFile06
+
+
 
 # Exercise 03: Breaking an FFV1 Files
 
