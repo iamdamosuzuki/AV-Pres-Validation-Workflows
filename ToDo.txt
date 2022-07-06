@@ -1,5 +1,4 @@
 File/Exercise Management:
-  find a bunch of samples file, including SAMMA mxf
   Need QCTools screenshots of
     Quantized 8bit waveform
     8bit slice
@@ -20,16 +19,3 @@ Slides:
   Slide 54: Progressive Video in QCTools
   Slide 59: Conformance with Mediaconch
   Digitization station qualification - tie back bullets to previous concepts
-
-Exercises:
-  Exercise 2:
-    Need to get a bunch of examples
-    Need discuss how to use mediainfo to harvest information
-    Need to discuss how to playback a file using FFplay
-    People should try playing files in quicktime and see what happens
-    Then try playing files in FFmpeg and see what happens
-    Check mediainfo for the following specs
-      frame size
-      bit depth
-      codec
-      compression mode
