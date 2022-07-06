@@ -517,8 +517,22 @@ Now, use what you've learned in this workshop to see which of these files comes 
 </details>
 
 <details>
-  <summary>Hint 5</summary>
+  <summary>Hint 6</summary>
+
+  Now that you have QCTools reports generated, you can look for common errors. Are there repeated frames? Does the waveform look good, or is it clipped or chopped up? Do all the bitplanes contain data?
+
+</details>
+
+<details>
+  <summary>Hint 7</summary>
 
   Don't forget to visually inspect the files! Use your eyes and ears. Also, FFplay is a better playback platform for troubleshooting than VLC because sometimes VLC will fix problems it sees, whereas FFplay will play exactly what it encounters, even if it's problematic.
+
+</details>
+
+<details>
+  <summary>Hint 8</summary>
+
+  When you're visually inspecting the files, check to make sure that the files look interlaced. It's easiest to see interlacing when things move from side to side. Also, check to see that the audio and video are in sync with each other.
 
 </details>
