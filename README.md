@@ -1,4 +1,6 @@
-# Getting Started
+# Getting Started (Do This Before The Workshop)
+
+Please complete everything in this first section before you come to the workshop. It'll take a while to download and install all of the necessary files and applications. If you wait until the workshop starts you may fall behind while you wait for the downloads to complete.
 
 ## Required Software
 
@@ -18,9 +20,11 @@ The following programs can be installed via the command line
 
 `brew install mediainfo`
 
-#### SoX (suggested but not required)
+#### SoX (not required)
 
 `brew install sox`
+
+_Note: This was originally used to generate spectrograms, but is no longer being used. You don't need to isntall sox if you don't want to_
 
 ### GUI Installations
 
@@ -625,7 +629,7 @@ diff Source_Uncompressed.mov.encodedframemd5 MOV_From_FFV1.mov.encodedframemd5
 
 # Exercise 05: Audio Station Qualification
 
-## Investigating Spectograms
+## Investigating Spectrograms
 
 A spectrogram is a visual representation of a file's frequency spectrum.
 
@@ -643,6 +647,12 @@ There is a sample music file included in this folder. Create a spectrogram of th
 ffmpeg -i Sample_Music.wav -vn -lavfi showspectrumpic=s=1280x480 Sample_Music.wav.png
 ```
 
+_Note: Alternatively, you can create spectorgrams using `sox` however this wont work on video files, which we'll do later. This is why we've switched over to using FFmpeg to create them. the following is the command for creating them with `sox`_
+
+```
+sox Sample_Music.wav -n spectrogram -o Sample_Music.wav.png
+```
+
 Open up the spectrogram and see if you can follow along with with the music. You should be able to see notes appear in the spectrogram. Spectrograms can be very useful for troubleshooting nad qualifying digitization stations.
 
 ### Sample Rate Issues
@@ -657,7 +667,7 @@ ffmpeg -i Sample_Music.wav -c:a pcm_s24le -ar 96000 Sample_Music_96kHz.wav
 
 If you listen to the file, there should be no audible difference between the two.
 
-Now, make a spectogram of the 96kHz file.
+Now, make a spectrogram of the 96kHz file.
 
 ```
 ffmpeg -i Sample_Music_96kHz.wav -vn -lavfi showspectrumpic=s=1280x480 Sample_Music_96kHz.wav.png
@@ -681,7 +691,7 @@ Now, make a spectrogram of this file:
 ffmpeg -i SineWave.wav -vn -lavfi showspectrumpic=s=1280x480 SineWave.wav.png
 ```
 
-Open up the spectogram. you should just see a line. That's because sine waves only have one frequency!
+Open up the spectrogram. you should just see a line. That's because sine waves only have one frequency!
 
 Now, let's create a sine wave file with some dropped samples.
 
@@ -689,13 +699,13 @@ Now, let's create a sine wave file with some dropped samples.
 ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" -bsf:a noise=drop='eq(mod(n\,50)\,1)' -c:a pcm_s24le -ar 96000 SineWave_DroppedSamples.wav
 ```
 
-Listen to this file. You should hear a small click whenever a sample is dropped. One way to qualify a station would be to record audio and listen for this clicks. However, this takes a long time and would be very difficult to do. Let's make it easier by making a spectogram of this file:
+Listen to this file. You should hear a small click whenever a sample is dropped. One way to qualify a station would be to record audio and listen for this clicks. However, this takes a long time and would be very difficult to do. Let's make it easier by making a spectrogram of this file:
 
 ```
 ffmpeg -i SineWave_DroppedSamples.wav -vn -lavfi showspectrumpic=s=1280x480 SineWave_DroppedSamples.wav.png
 ```
 
-Now, view the spectogram. You'll see big lines of noise where the dropouts are. That's because dropouts manifest as momentary broadband noise. As you can, creating a spectogram of a file is an easy way to see whether samples have been dropped. Testing files created by your audio digitization workstation for dropouts is one way to qualify that workstation.
+Now, view the spectrogram. You'll see big lines of noise where the dropouts are. That's because dropouts manifest as momentary broadband noise. As you can, creating a spectrogram of a file is an easy way to see whether samples have been dropped. Testing files created by your audio digitization workstation for dropouts is one way to qualify that workstation.
 
 
 ## Performing an Audio Null Test
@@ -818,7 +828,7 @@ Now, use what you've learned in this workshop to see which of these files comes 
 <details>
   <summary>Hint 3</summary>
 
-  The following command will create a spectogram for every file. You can use this to see if there are any errors in the frequency specturum
+  The following command will create a spectrogram for every file. You can use this to see if there are any errors in the frequency specturum
 
   ```
   for file in *.mkv ; do ffmpeg -i "$file" -vn -lavfi showspectrumpic=s=1280x480 "${file}.png" ; done
