@@ -8,14 +8,10 @@ File/Exercise Management:
 
 
 Slides:
-  Slide 35: FFV1 / MKV for video preservation
-  Slide 39: Is the analog signal properly converted to digital?
-  Slide 40: Is the digital signal properly recorded?
-  Slide 41: Does the recorded format match the desired specs
-  Slide 50: Sync errors in QCTools
-  Slide 51: Repeated Frames in QCTools
-  Slide 52: 10bit/8bit in QCTools
-  Slide 53: Clipping in QCTools
-  Slide 54: Progressive Video in QCTools
-  Slide 59: Conformance with Mediaconch
+  Slide 51: Sync errors in QCTools
+  Slide 52: Repeated Frames in QCTools
+  Slide 53: 10bit/8bit in QCTools
+  Slide 54: Clipping in QCTools
+  Slide 55: Progressive Video in QCTools
+  Slide 60: Conformance with Mediaconch
   Digitization station qualification - tie back bullets to previous concepts
