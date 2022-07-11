@@ -2,7 +2,21 @@
 
 Please complete everything in this first section before you come to the workshop. It'll take a while to download and install all of the necessary files and applications. If you wait until the workshop starts you may fall behind while you wait for the downloads to complete.
 
-## Required Software
+Most of the exercises will be done using the command line. If you're not comfortable with this you can follow along as the instructor completes the assignments. However, we suggest you try to follow along on your own, as the the following instructions contain everything you need to do so.
+
+## Opening terminal
+
+To open Terminal on your Mac, open Finder, go to _Applications_ then scroll down to the _Utilities_ folder in. Scroll down to the _Terminal_ application and open it. You should right-click the icon in your doc, press _Options_ then click _Keep in Dock_ so that the application will easily accessible.
+
+In this workshop you will see text that looks `like this`, or
+
+```
+a block of text that looks like this.
+```
+
+These are commands that you should either type, or copy/paste into your terminal window. Once you've pasted the comman into the window you'll need to hit _Enter_ to run the command
+
+## Installing Required Software
 
 ### Command Line Installation
 
@@ -42,9 +56,29 @@ https://mediaarea.net/MediaConch/Download
 
 https://www.videolan.org/vlc/
 
+## Cloning this GitHub repository
+
+In an temrinal window, you'll need to find the folder you want this repository downloaded to. I suggest using your _Documents_ folder. You can move the working directory of your terminal window do _Documents_ by using the `cd` command like this:
+
+```
+cd ~/Documents/
+```
+
+Once you've moved the working directory to _Documents_ you can run the following command to clone the repo using HTTP:
+
+```
+git clone https://github.com/iamdamosuzuki/AV-Pres-Validation-Workflows.git
+```
+
+Now you should move the working directory into the repository with the following command:
+
+```
+cd AV-Pres-Validation-Workflows/
+```
+
 ## Downloading Required Files
 
-The files that you need in order complete the exercises are quite large. You should stat downloading the files immediately so that they'll be ready by the time you need them.
+By cloning the repo you'll have some of the files you need, but others are too large to fir in the repo and you'll need to download them yourself. You should stat downloading the files immediately so that they'll be ready by the time you need them.
 
 ### File for Exercise 1
 
