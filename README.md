@@ -901,3 +901,18 @@ Now, use what you've learned in this workshop to see which of these files comes 
   When you're visually inspecting the files, check to make sure that the files look interlaced. It's easiest to see interlacing when things move from side to side. Also, check to see that the audio and video are in sync with each other.
 
 </details>
+
+<details>
+  <summary>Answers!</summary>
+
+  - Qualification_Test_File_01: BAD - Only 8 bits of video information. You can see this in the QCTools 10-bit Slice filter
+  - Qualification_Test_File_02: BAD - Luma is clipped severely. You can see this in the waveform using QCTools
+  - Qualification_Test_File_03: BAD - There is a dropped audio frame. This can be seen as a burst of noise in the spectrogram
+  - Qualification_Test_File_04: BAD - This file has visible glitches and sync errors. You can find them easily by looking at the VREP spikes in QCTools
+  - Qualification_Test_File_05: GOOD - This is the one good file.
+  - Qualification_Test_File_06: BAD - The audio and video are out of sync in this file. You can only see this by watching the file and using your eyes and ears.
+  - Qualification_Test_File_07: BAD - This file is corrupted. It can be seen in the FFmpeg error log
+  - Qualification_Test_File_08: BAD - This is actually a ProRes file in disguise. You can see thi by viewing the file mediainfo or FFprobe
+  - Qualification_Test_File_09: BAD - This one was extremely tricky. The file is deinterlaced, which can be seen if you view the file in ffplay. It's even trickier because mediainfo and ffprobe will report that the file is interlaced.
+
+</details>
