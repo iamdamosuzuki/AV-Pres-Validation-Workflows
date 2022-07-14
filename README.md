@@ -34,6 +34,10 @@ The following programs can be installed via the command line
 
 `brew install mediainfo`
 
+#### qcli (QCTools command line tool)
+
+`brew install qcli`
+
 #### SoX (not required)
 
 `brew install sox`
